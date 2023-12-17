@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 function Home() {
-  useEffect(() => {
-    console.log("aa");
+  const clickButton = () => {
     fetch("http://localhost:8080/api/posts/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: "test",
+        content: "hogehoge",
       }),
     })
       .then((res) => {
@@ -17,8 +16,25 @@ function Home() {
       .then((ans) => {
         console.log(ans);
       });
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/posts/")
+      .then((res) => {
+        return res.json();
+      })
+      .then((ans) => {
+        console.log(ans);
+      });
   }, []);
-  return <div className="home">hello</div>;
+  return (
+    <>
+      <div className="home">hello</div>
+      <button type="button" onClick={clickButton}>
+        クリック
+      </button>
+    </>
+  );
 }
 
 export default Home;
