@@ -8,6 +8,9 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+
 function CreatePost() {
   const [token, setToken] = useState("");
   const [term, setTerm] = useState("");
@@ -16,6 +19,57 @@ function CreatePost() {
   const [comment, setComment] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [singInfo, setSingInfo] = useState([]);
+
+  const container = css`
+    display: flex;
+    flex-direction: column; /* Align children in a column */
+    align-items: center; /* Center items horizontally */
+    background-color: #002417;
+    min-height: 100vh;
+    text-align: center;
+  `;
+
+  const title = css`
+    font-size: 40px;
+    color: white;
+  `;
+
+  const formContainer = css`
+    width: 60%;
+    margin: 30px 0;
+  `;
+
+  const form = css`
+    background-color: white;
+    border: 1px solid;
+  `;
+
+  const label = css`
+    color: white;
+  `;
+
+  const button = css`
+    background-color: rgb(6, 130, 68);
+    padding: 10px 20px;
+    color: white;
+
+    &:hover {
+      background-color: #004d29;
+    }
+  `;
+
+  const suggest = css`
+    text-align: left;
+    cursor: pointer;
+    background-color: white;
+    display: flex;
+    align-items: center;
+
+    
+                      _hover={{ bg: "#949593" }}
+                      key={index}
+                      p="8px 8px"
+  `;
 
   useEffect(() => {
     fetch(`https://accounts.spotify.com/api/token`, {
@@ -76,16 +130,18 @@ function CreatePost() {
   };
 
   return (
-    <>
-      <Box w="50%">
+    <div css={container}>
+      <h2 css={title}>投稿画面</h2>
+      <Box css={formContainer}>
         <FormControl isRequired marginBottom="50px">
-          <FormLabel>曲名を入力してください</FormLabel>
+          <FormLabel css={label}>曲名を入力してください</FormLabel>
           <Input
             onFocus={() => setIsFocus(true)}
             type="text"
             value={term}
             onChange={handleSingChange}
             border="1px solid black"
+            css={form}
           />
 
           {isFocus && (
@@ -108,6 +164,7 @@ function CreatePost() {
                       _hover={{ bg: "#949593" }}
                       key={index}
                       p="8px 8px"
+                      css={suggest}
                       onClick={async () => {
                         await setTerm(sing.name);
                         await setArtist(sing.artists[0].name);
@@ -135,19 +192,20 @@ function CreatePost() {
         </FormControl>
 
         <FormControl isRequired marginBottom="50px">
-          <FormLabel>コメント</FormLabel>
+          <FormLabel css={label}>コメント</FormLabel>
           <Input
             type="text"
             onChange={handleCommentChange}
             border="1px solid black"
+            css={form}
           />
         </FormControl>
 
-        <Button backgroundColor="blue" color="white" onClick={PostInfo}>
+        <Button css={button} onClick={PostInfo}>
           投稿
         </Button>
       </Box>
-    </>
+    </div>
   );
 }
 

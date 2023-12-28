@@ -12,7 +12,8 @@ function Router() {
       <Routes>
         <Route exact path="/" element={<CreatePost />} />
         <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/login" element={<Login />}></Route>
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/new" element={<CreatePost />} />
       </Routes>
     </BrowserRouter>
   );
