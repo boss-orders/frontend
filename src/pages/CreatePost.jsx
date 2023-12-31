@@ -8,6 +8,8 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+import { useCookies } from "react-cookie";
+
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
@@ -19,6 +21,8 @@ function CreatePost() {
   const [comment, setComment] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [singInfo, setSingInfo] = useState([]);
+
+  const [, setCookie] = useCookies();
 
   const container = css`
     display: flex;
@@ -42,6 +46,7 @@ function CreatePost() {
   const form = css`
     background-color: white;
     border: 1px solid;
+    margin-bottom: 70px;
   `;
 
   const label = css`
@@ -58,17 +63,26 @@ function CreatePost() {
     }
   `;
 
+  const suggestBox = css`
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 100%;
+    z-index: 1;
+  `;
+
   const suggest = css`
     text-align: left;
     cursor: pointer;
     background-color: white;
     display: flex;
     align-items: center;
+    padding: 8px 8px;
 
-    
-                      _hover={{ bg: "#949593" }}
-                      key={index}
-                      p="8px 8px"
+    &:hover {
+      background-color: #949593;
+    }
   `;
 
   useEffect(() => {
@@ -92,7 +106,8 @@ function CreatePost() {
       })
       .then((tokenData) => {
         setToken(tokenData.access_token);
-        console.log("トークンセット");
+
+        setCookie("spotifyToken", tokenData.access_token);
       });
   }, []);
 
@@ -133,37 +148,23 @@ function CreatePost() {
     <div css={container}>
       <h2 css={title}>投稿画面</h2>
       <Box css={formContainer}>
-        <FormControl isRequired marginBottom="50px">
+        <FormControl isRequired>
           <FormLabel css={label}>曲名を入力してください</FormLabel>
           <Input
             onFocus={() => setIsFocus(true)}
             type="text"
             value={term}
             onChange={handleSingChange}
-            border="1px solid black"
             css={form}
           />
 
           {isFocus && (
-            <Box
-              w="100%"
-              h="100%"
-              boxShadow="md"
-              bg="white"
-              mt="8px"
-              borderRadius="lg"
-            >
+            <Box css={suggestBox}>
               {singInfo.map((sing, index) =>
                 sing ? (
                   <>
                     <Text
-                      cursor="pointer"
-                      bg="white"
-                      display="flex"
-                      alignItems="center"
-                      _hover={{ bg: "#949593" }}
                       key={index}
-                      p="8px 8px"
                       css={suggest}
                       onClick={async () => {
                         await setTerm(sing.name);
@@ -191,14 +192,9 @@ function CreatePost() {
           )}
         </FormControl>
 
-        <FormControl isRequired marginBottom="50px">
+        <FormControl isRequired>
           <FormLabel css={label}>コメント</FormLabel>
-          <Input
-            type="text"
-            onChange={handleCommentChange}
-            border="1px solid black"
-            css={form}
-          />
+          <Input type="text" onChange={handleCommentChange} css={form} />
         </FormControl>
 
         <Button css={button} onClick={PostInfo}>
