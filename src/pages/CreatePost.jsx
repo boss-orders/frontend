@@ -68,7 +68,7 @@ function CreatePost() {
     height: 100%;
 
     position: absolute;
-    top: 100%;
+    top: 55%;
     z-index: 1;
   `;
 
