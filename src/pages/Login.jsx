@@ -15,6 +15,7 @@ function Login() {
   const LogInButton = () => {
     fetch("http://localhost:8080/auth/sign_in", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -24,10 +25,12 @@ function Login() {
       }),
     })
       .then((res) => {
-        return res.json();
+        console.log(res);
+
+        return res;
       })
       .then((ans) => {
-        console.log(ans);
+        console.log(ans.headers.get("Authorization")); // VSJ-lEs9u2vuDrTLnqTUZw
       });
   };
 

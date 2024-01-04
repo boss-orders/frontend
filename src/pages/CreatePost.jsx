@@ -21,6 +21,7 @@ function CreatePost() {
   const [comment, setComment] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [singInfo, setSingInfo] = useState([]);
+  const [songId, setSongId] = useState("");
 
   const [, setCookie] = useCookies();
 
@@ -138,10 +139,25 @@ function CreatePost() {
   };
 
   const PostInfo = () => {
-    console.log(term);
-    console.log(artist);
-    console.log(singImage);
-    console.log(comment);
+    fetch(`http://127.0.0.1:8000/users/1/posts/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        music: term,
+        image: singImage,
+        artist: artist,
+        comment: comment,
+        music_id: songId,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then(() => {
+        alert("投稿されました");
+      });
   };
 
   return (
@@ -170,6 +186,7 @@ function CreatePost() {
                         await setTerm(sing.name);
                         await setArtist(sing.artists[0].name);
                         await setSingImage(sing.album.images[0].url);
+                        await setSongId(sing.id);
                         await setIsFocus(false);
                       }}
                     >
