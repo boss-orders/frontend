@@ -15,7 +15,6 @@ function Login() {
   const LogInButton = () => {
     fetch("http://localhost:8080/auth/sign_in", {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

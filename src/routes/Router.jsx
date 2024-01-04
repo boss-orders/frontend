@@ -10,7 +10,7 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<CreatePost />} />
+        <Route exact path="/" element={<Home />} />
         <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/new" element={<CreatePost />} />

@@ -27,16 +27,9 @@ function CreatePost() {
 
   const container = css`
     display: flex;
-    flex-direction: column; /* Align children in a column */
-    align-items: center; /* Center items horizontally */
-    background-color: #002417;
-    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-  `;
-
-  const title = css`
-    font-size: 40px;
-    color: white;
   `;
 
   const formContainer = css`
@@ -45,9 +38,9 @@ function CreatePost() {
   `;
 
   const form = css`
-    background-color: white;
-    border: 1px solid;
-    margin-bottom: 70px;
+    border: 2px solid white;
+    margin-bottom: 20px;
+    color: white;
   `;
 
   const label = css`
@@ -69,7 +62,7 @@ function CreatePost() {
     height: 100%;
 
     position: absolute;
-    top: 55%;
+    top: 90%;
     z-index: 1;
   `;
 
@@ -162,7 +155,6 @@ function CreatePost() {
 
   return (
     <div css={container}>
-      <h2 css={title}>投稿画面</h2>
       <Box css={formContainer}>
         <FormControl isRequired>
           <FormLabel css={label}>曲名を入力してください</FormLabel>
