@@ -7,6 +7,7 @@ import "./style.css";
 import { css } from "@emotion/react";
 
 import CreatePost from "./CreatePost";
+import Header from "../component/Header";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -53,6 +54,7 @@ function Home() {
   }, []);
   return (
     <div css={postContainer}>
+      <Header />
       <CreatePost />
 
       {posts.map((post) => (

@@ -2,7 +2,6 @@ import { useState } from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -13,35 +12,10 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
-const getSpotifyToken = () => {
-  fetch(`https://accounts.spotify.com/api/token`, {
-    method: "POST",
-    headers: {
-      Authorization:
-        "Basic " +
-        btoa(
-          `${process.env.REACT_APP_API_CLIENT}:${process.env.REACT_APP_API_CLIENT_SECRET}`
-        ),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: process.env.REACT_APP_API_REFRESH_TOKEN,
-    }),
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((tokenData) => {
-      return tokenData.access_token;
-    });
-};
-
 function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [, setCookie] = useCookies();
-  const navigation = useNavigate();
 
   const container = css`
     display: flex;
