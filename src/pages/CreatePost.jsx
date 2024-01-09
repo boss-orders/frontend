@@ -23,13 +23,17 @@ function CreatePost() {
   const [singInfo, setSingInfo] = useState([]);
   const [songId, setSongId] = useState("");
 
-  const [, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies();
+
+  const accessToken = cookies.token;
 
   const container = css`
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    border-bottom: 3px solid white;
+    margin-bottom: 70px;
   `;
 
   const formContainer = css`
@@ -132,10 +136,11 @@ function CreatePost() {
   };
 
   const PostInfo = () => {
-    fetch(`http://127.0.0.1:8000/users/1/posts/`, {
+    fetch(`http://127.0.0.1:8000/users/posts/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         music: term,

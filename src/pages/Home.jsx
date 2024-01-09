@@ -42,7 +42,7 @@ function Home() {
   `;
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/users/1/posts/?skip=0&limit=100")
+    fetch("http://127.0.0.1:8000/posts/?skip=0&limit=100")
       .then((res) => {
         return res.json();
       })

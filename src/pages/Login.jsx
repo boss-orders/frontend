@@ -1,72 +1,147 @@
 import { useState } from "react";
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+
+import {
+  Box,
+  Input,
+  Text,
+  Button,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+
+const getSpotifyToken = () => {
+  fetch(`https://accounts.spotify.com/api/token`, {
+    method: "POST",
+    headers: {
+      Authorization:
+        "Basic " +
+        btoa(
+          `${process.env.REACT_APP_API_CLIENT}:${process.env.REACT_APP_API_CLIENT_SECRET}`
+        ),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: process.env.REACT_APP_API_REFRESH_TOKEN,
+    }),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((tokenData) => {
+      return tokenData.access_token;
+    });
+};
 
 function Login() {
-  const [mail, setMail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [, setCookie] = useCookies();
+  const navigation = useNavigate();
 
-  const handleMailChange = (e) => {
-    setMail(e.target.value);
+  const container = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    margin-bottom: 70px;
+    background-color: #002417;
+  `;
+
+  const title = css`
+    color: white;
+    font-size: 25px;
+    margin: 30px 0;
+  `;
+
+  const formContainer = css`
+    width: 60%;
+    margin: 30px 0;
+  `;
+
+  const form = css`
+    border: 2px solid white;
+    margin-bottom: 20px;
+    color: white;
+  `;
+
+  const label = css`
+    color: white;
+  `;
+
+  const button = css`
+    background-color: rgb(6, 130, 68);
+    padding: 10px 20px;
+    color: white;
+
+    &:hover {
+      background-color: #004d29;
+    }
+  `;
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  const LogInButton = () => {
-    fetch("http://localhost:8080/auth/sign_in", {
+  async function LogInButton() {
+    const data = new URLSearchParams({
+      grant_type: "",
+      username: name,
+      password: password,
+      scope: "",
+      client_id: "",
+      client_secret: "",
+    });
+
+    fetch("http://127.0.0.1:8000/token", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: JSON.stringify({
-        email: mail,
-        password: password,
-      }),
+      body: data,
     })
       .then((res) => {
-        console.log(res);
-
-        return res;
+        return res.json();
       })
-      .then((ans) => {
-        console.log(ans.headers.get("Authorization")); // VSJ-lEs9u2vuDrTLnqTUZw
+      .then((token) => {
+        console.log(token);
+        setCookie("token", token.access_token);
+      })
+
+      .catch((error) => {
+        console.log(error);
       });
-  };
+  }
 
   return (
-    <div className="main">
-      <h2>ログイn</h2>
+    <div css={container}>
+      <Box css={formContainer}>
+        <Text css={title}>ログイン</Text>
 
-      <form className="signin-form">
-        <label htmlFor="email">
-          メールアドレス
-          <br />
-          <input
-            type="email"
-            className="email-input"
-            id="email"
-            onChange={handleMailChange}
-          />
-        </label>
+        <FormControl>
+          <FormLabel css={label}>名前</FormLabel>
+          <Input type="text" css={form} onChange={handleNameChange} />
+        </FormControl>
 
-        <br />
+        <FormControl>
+          <FormLabel css={label}>パスワード</FormLabel>
+          <Input type="password" css={form} onChange={handlePasswordChange} />
+        </FormControl>
 
-        <label htmlFor="password-form">
-          パスワード
-          <br />
-          <input
-            type="password"
-            className="password-input"
-            id="password-form"
-            onChange={handlePasswordChange}
-          />
-        </label>
-
-        <br />
-        <button type="button" id="signin-button" onClick={LogInButton}>
+        <Button css={button} onClick={LogInButton}>
           ログイン
-        </button>
-      </form>
+        </Button>
+      </Box>
     </div>
   );
 }
