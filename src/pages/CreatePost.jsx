@@ -155,6 +155,8 @@ function CreatePost() {
       })
       .then(() => {
         alert("投稿されました");
+        setTerm("");
+        setComment("");
       });
   };
 
@@ -208,7 +210,12 @@ function CreatePost() {
 
         <FormControl isRequired>
           <FormLabel css={label}>コメント</FormLabel>
-          <Input type="text" onChange={handleCommentChange} css={form} />
+          <Input
+            type="text"
+            onChange={handleCommentChange}
+            css={form}
+            value={comment}
+          />
         </FormControl>
 
         <Button css={button} onClick={PostInfo}>
