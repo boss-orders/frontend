@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import Home from "../pages/Home";
 import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
-import CreatePost from "../pages/CreatePost";
 import DetailUser from "../pages/DetailUser";
 
 function Router() {
@@ -20,10 +19,10 @@ function Router() {
         ) : (
           <Route path="/" element={<Login />} />
         )}
-        <Route path="/" element={<Home />} />
+
         <Route exact path="/signup" element={<SignUp />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/new" element={<CreatePost />} />
+
         <Route exact path="/user/:id" element={<DetailUser />} />
       </Routes>
     </BrowserRouter>

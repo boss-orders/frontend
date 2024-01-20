@@ -8,11 +8,9 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-
 import "./style.css";
 
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import classes from "../style/Home.module.css";
 
 import Header from "../component/Header";
 
@@ -27,93 +25,10 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [cookies, setCookie] = useCookies();
   const [newPost, setNewPost] = useState();
+  const [myInfo, setMyInfo] = useState();
 
-  const accessToken = cookies.token;
   const spotifyToken = cookies.spotifyToken;
-
-  const formContainer = css`
-    width: 60%;
-    margin: 30px 0;
-  `;
-
-  const form = css`
-    border: 2px solid white;
-    margin-bottom: 20px;
-    color: white;
-  `;
-
-  const label = css`
-    color: white;
-  `;
-
-  const button = css`
-    background-color: rgb(6, 130, 68);
-    padding: 10px 20px;
-    color: white;
-    margin-bottom: 30px;
-
-    &:hover {
-      background-color: #004d29;
-    }
-  `;
-
-  const suggestBox = css`
-    width: 100%;
-    height: 100%;
-
-    position: absolute;
-    top: 90%;
-    z-index: 1;
-  `;
-
-  const suggest = css`
-    text-align: left;
-    cursor: pointer;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    padding: 8px 8px;
-
-    &:hover {
-      background-color: #949593;
-    }
-  `;
-
-  const HomeContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    margin-bottom: 70px;
-    background-color: #002417;
-  `;
-
-  const pos = css`
-    display: flex;
-    align-items: center;
-    width: 500px;
-    border: 3px solid white;
-    border-radius: 10px;
-    margin: 0 auto;
-    margin-bottom: 30px;
-    padding: 10px;
-  `;
-
-  const songImg = css`
-    height: 150px;
-    width: 150px;
-  `;
-
-  const postRight = css`
-    margin-left: 40px;
-    color: white;
-    font-size: 18px;
-  `;
-
-  const postText = css`
-    padding: 5px 0;
-  `;
+  const accessToken = cookies.token;
 
   const handleSingChange = (e) => {
     setTerm(e.target.value);
@@ -187,6 +102,19 @@ function Home() {
       })
       .then((tokenData) => {
         setCookie("spotifyToken", tokenData.access_token);
+      })
+      .then(() => {
+        fetch(`http://127.0.0.1:8000/users/me`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+          .then((res) => {
+            return res.json();
+          })
+          .then((myInfo) => {
+            setMyInfo(myInfo);
+          });
       });
   }, []);
 
@@ -200,29 +128,32 @@ function Home() {
         setPosts(reversePost);
       });
   }, [newPost]);
+
   return (
     <>
-      <Header />
-      <div css={HomeContainer}>
-        <Box css={formContainer}>
+      {myInfo && <Header name={myInfo.username} id={myInfo.id} />}
+      <div className={classes.HomeContainer}>
+        <Box className={classes.formContainer}>
           <FormControl isRequired>
-            <FormLabel css={label}>曲名を入力してください</FormLabel>
+            <FormLabel className={classes.label}>
+              曲名を入力してください
+            </FormLabel>
             <Input
               onFocus={() => setIsFocus(true)}
               type="text"
               value={term}
               onChange={handleSingChange}
-              css={form}
+              className={classes.form}
             />
 
             {isFocus && (
-              <Box css={suggestBox}>
+              <Box className={classes.suggestBox}>
                 {singInfo.map((sing, index) =>
                   sing ? (
                     <>
                       <Text
                         key={index}
-                        css={suggest}
+                        className={classes.suggest}
                         onClick={async () => {
                           await setTerm(sing.name);
                           await setArtist(sing.artists[0].name);
@@ -251,27 +182,30 @@ function Home() {
           </FormControl>
 
           <FormControl isRequired>
-            <FormLabel css={label}>コメント</FormLabel>
+            <FormLabel className={classes.label}>コメント</FormLabel>
             <Input
               type="text"
               onChange={handleCommentChange}
-              css={form}
+              className={classes.form}
               value={comment}
             />
           </FormControl>
 
-          <Button css={button} onClick={PostInfo}>
+          <Button className={classes.postbutton} onClick={PostInfo}>
             投稿
           </Button>
         </Box>
 
         {posts.map((post) => (
-          <Box css={pos} key={post.id}>
-            <img src={post.image} alt="曲の画像" css={songImg} />
-            <Box css={postRight}>
-              <Text css={postText}>{post.music}</Text>
-              <Text css={postText}>{post.artist}</Text>
-              <Text css={postText}>{post.comment}</Text>
+          <Box className={classes.pos} key={post.id}>
+            <img src={post.image} alt="曲の画像" className={classes.songImg} />
+            <Box className={classes.postRight}>
+              <Text className={classes.postText}>{post.music}</Text>
+              <Text className={classes.postText}>{post.artist}</Text>
+              <Text className={classes.postText}>{post.comment}</Text>
+              <Text className={classes.postCreater}>
+                作成者：{post.user.username}
+              </Text>
             </Box>
           </Box>
         ))}

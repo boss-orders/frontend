@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 70px;
+  background-color: #002417;
+}
+
+.title {
+  color: white;
+  font-size: 25px;
+  margin: 30px 0;
+}
+
+.info {
+  color: white;
+  font-size: 20px;
+  list-style: none;
+}
+
+.infoList {
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+.pos {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  border: 3px solid white;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  padding: 10px;
+}
+
+.songImg {
+  height: 150px;
+  width: 150px;
+}
+
+.postRight {
+  margin-left: 40px;
+  color: white;
+  font-size: 18px;
+}
+
+.postText {
+  padding: 5px 0;
+}

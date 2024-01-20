@@ -1,0 +1,89 @@
+.HomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 70px;
+  background-color: #002417;
+}
+
+.formContainer {
+  width: 60%;
+  margin: 30px 0;
+}
+
+.form {
+  border: 2px solid white;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.label {
+  color: white;
+}
+
+.postbutton {
+  background-color: green;
+  padding: 10px 20px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.postbutton:hover {
+  background-color: #004d29;
+}
+
+.suggestBox {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 90%;
+  z-index: 1;
+}
+
+.suggest {
+  text-align: left;
+  cursor: pointer;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+}
+
+.suggest:hover {
+  background-color: #949593;
+}
+
+.pos {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  border: 3px solid white;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  padding: 10px;
+}
+
+.songImg {
+  height: 150px;
+  width: 150px;
+}
+
+.postRight {
+  margin-left: 40px;
+  color: white;
+  font-size: 18px;
+  text-align: left;
+  width: 280px;
+}
+
+.postCreater {
+  float: right;
+}
+
+.postText {
+  padding: 5px 0;
+}

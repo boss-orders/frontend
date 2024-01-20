@@ -1,0 +1,22 @@
+.title {
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.appTitle {
+  color: white;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.container {
+  background-color: #004d29;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+}

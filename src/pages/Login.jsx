@@ -1,7 +1,6 @@
 import { useState } from "react";
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { useCookies } from "react-cookie";
+import classes from "../style/Login.module.css";
 
 import {
   Box,
@@ -16,47 +15,6 @@ function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [, setCookie] = useCookies();
-
-  const container = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-
-    margin-bottom: 70px;
-    background-color: #002417;
-  `;
-
-  const title = css`
-    color: white;
-    font-size: 25px;
-    margin: 30px 0;
-  `;
-
-  const formContainer = css`
-    width: 60%;
-    margin: 30px 0;
-  `;
-
-  const form = css`
-    border: 2px solid white;
-    margin-bottom: 20px;
-    color: white;
-  `;
-
-  const label = css`
-    color: white;
-  `;
-
-  const button = css`
-    background-color: rgb(6, 130, 68);
-    padding: 10px 20px;
-    color: white;
-
-    &:hover {
-      background-color: #004d29;
-    }
-  `;
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -98,21 +56,29 @@ function Login() {
   }
 
   return (
-    <div css={container}>
-      <Box css={formContainer}>
-        <Text css={title}>ログイン</Text>
+    <div className={classes.container}>
+      <Box className={classes.formContainer}>
+        <Text className={classes.title}>ログイン</Text>
 
         <FormControl>
-          <FormLabel css={label}>名前</FormLabel>
-          <Input type="text" css={form} onChange={handleNameChange} />
+          <FormLabel className={classes.label}>名前</FormLabel>
+          <Input
+            type="text"
+            className={classes.form}
+            onChange={handleNameChange}
+          />
         </FormControl>
 
         <FormControl>
-          <FormLabel css={label}>パスワード</FormLabel>
-          <Input type="password" css={form} onChange={handlePasswordChange} />
+          <FormLabel className={classes.label}>パスワード</FormLabel>
+          <Input
+            type="password"
+            className={classes.form}
+            onChange={handlePasswordChange}
+          />
         </FormControl>
 
-        <Button css={button} onClick={LogInButton}>
+        <Button className={classes.button} onClick={LogInButton}>
           ログイン
         </Button>
       </Box>
