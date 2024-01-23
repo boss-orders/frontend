@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
 import {
   Box,
   Input,
@@ -23,7 +24,7 @@ function Home() {
   const [singInfo, setSingInfo] = useState([]);
   const [songId, setSongId] = useState("");
   const [posts, setPosts] = useState([]);
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
   const [newPost, setNewPost] = useState();
   const [myInfo, setMyInfo] = useState();
 
@@ -42,7 +43,7 @@ function Home() {
           return response.json();
         })
         .then((info) => {
-          console.log(info.tracks.items);
+          // console.log(info.tracks.items);
           setSingInfo(info.tracks.items);
         })
         .catch((error) => {
@@ -110,10 +111,16 @@ function Home() {
           },
         })
           .then((res) => {
+            if (!res.ok) {
+              throw new Error("Failed to fetch user information");
+            }
             return res.json();
           })
           .then((myInfo) => {
             setMyInfo(myInfo);
+          })
+          .catch((error) => {
+            console.log(error);
           });
       });
   }, []);

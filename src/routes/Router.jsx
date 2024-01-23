@@ -15,15 +15,15 @@ function Router() {
     <BrowserRouter>
       <Routes>
         {token ? (
-          <Route path="/" element={<Home />} />
+          <>
+            <Route path="/" element={<Home />} />
+            <Route exact path="/user/:id" element={<DetailUser />} />
+          </>
         ) : (
           <Route path="/" element={<Login />} />
         )}
 
         <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/login" element={<Login />} />
-
-        <Route exact path="/user/:id" element={<DetailUser />} />
       </Routes>
     </BrowserRouter>
   );

@@ -19,9 +19,12 @@
   margin: 30px 0;
 }
 
+.nameForm {
+  margin-bottom: 20px;
+}
+
 .form {
   border: 2px solid white;
-  margin-bottom: 20px;
   color: white;
 }
 
@@ -29,7 +32,7 @@
   color: white;
 }
 
-.button {
+.loginButton {
   background-color: rgb(6, 130, 68);
   padding: 10px 20px;
   color: white;
@@ -37,4 +40,15 @@
 
 .button:hover {
   background-color: #004d29;
+}
+
+.error {
+  color: red;
+  font-size: 20px;
+  float: left;
+}
+
+.loginFailed {
+  color: red;
+  font-size: 20px;
 }
