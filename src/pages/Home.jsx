@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -28,6 +29,8 @@ function Home() {
   const [newPost, setNewPost] = useState();
   const [myInfo, setMyInfo] = useState();
 
+  const navigate = useNavigate();
+
   const spotifyToken = cookies.spotifyToken;
   const accessToken = cookies.token;
 
@@ -43,7 +46,6 @@ function Home() {
           return response.json();
         })
         .then((info) => {
-          // console.log(info.tracks.items);
           setSingInfo(info.tracks.items);
         })
         .catch((error) => {
@@ -83,45 +85,47 @@ function Home() {
   };
 
   useEffect(() => {
-    fetch(`https://accounts.spotify.com/api/token`, {
-      method: "POST",
+    // Fetch user information first
+    fetch(`http://127.0.0.1:8000/users/me`, {
       headers: {
-        Authorization:
-          "Basic " +
-          btoa(
-            `${process.env.REACT_APP_API_CLIENT}:${process.env.REACT_APP_API_CLIENT_SECRET}`
-          ),
-        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: new URLSearchParams({
-        grant_type: "refresh_token",
-        refresh_token: process.env.REACT_APP_API_REFRESH_TOKEN,
-      }),
     })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch user information");
+        }
+        return res.json();
+      })
+      .then((myInfo) => {
+        setMyInfo(myInfo);
+
+        // Once user information is fetched, refresh the Spotify token
+        return fetch(`https://accounts.spotify.com/api/token`, {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa(
+                `${process.env.REACT_APP_API_CLIENT}:${process.env.REACT_APP_API_CLIENT_SECRET}`
+              ),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token: process.env.REACT_APP_API_REFRESH_TOKEN,
+          }),
+        });
+      })
       .then((res) => {
         return res.json();
       })
       .then((tokenData) => {
         setCookie("spotifyToken", tokenData.access_token);
       })
-      .then(() => {
-        fetch(`http://127.0.0.1:8000/users/me`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error("Failed to fetch user information");
-            }
-            return res.json();
-          })
-          .then((myInfo) => {
-            setMyInfo(myInfo);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      .catch((error) => {
+        console.log(error);
+        navigate("/login");
       });
   }, []);
 

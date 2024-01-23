@@ -14,15 +14,9 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        {token ? (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route exact path="/user/:id" element={<DetailUser />} />
-          </>
-        ) : (
-          <Route path="/" element={<Login />} />
-        )}
-
+        <Route path="/" element={<Home />} />
+        <Route exact path="/user/:id" element={<DetailUser />} />
+        <Route path="/login" element={<Login />} />
         <Route exact path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>

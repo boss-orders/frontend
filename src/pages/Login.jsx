@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import classes from "../style/Login.module.css";
 
@@ -18,9 +19,10 @@ import {
 function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [, setCookie] = useCookies();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -62,6 +64,7 @@ function Login() {
       })
       .then((token) => {
         setCookie("token", token.access_token);
+        navigate("/");
       })
 
       .catch((error) => {
@@ -74,7 +77,7 @@ function Login() {
   return (
     <div className={classes.container}>
       {error ? (
-        <Alert status="error">
+        <Alert status="error" id="alert">
           <AlertIcon />
           <AlertTitle>{error}</AlertTitle>
         </Alert>
